@@ -1,3 +1,13 @@
+fun isNegComp(prop) = 
+	case prop of
+		(*En caso de ser una negacion compuesta.*)
+		negacion (disyuncion(prop1, prop2)) => true
+		|negacion (conjuncion(prop1, prop2)) => true
+		|negacion (implicacion(prop1, prop2)) => true
+		(*En caso de no ser negacion compuesta, retornar falso*)
+		| _ => false
+;
+
 (*Probar si a una negacion se le puede aplicar la regla de doble negacion.*)
 fun DNAux(prop) =
 	case prop of

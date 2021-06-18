@@ -175,3 +175,47 @@ fun Exp(prop) =
 		implicacion(prop1, implicacion(prop2, prop3)) => (prop1 :&&: prop2) :=>: prop3
 		| _ => prop
 ;
+
+fun DisAux(prop) = 
+	case prop of
+		conjuncion(disyuncion(prop1, prop2), disyuncion(prop3, prop4)) 
+			=> if prop1 = prop3 andalso prop1 <> prop2 andalso prop1 <> prop4 
+			orelse prop1 = prop4 andalso prop1 <> prop2 andalso prop1 <> prop3 
+			orelse prop2 = prop3 andalso prop2 <> prop1 andalso prop2 <> prop4
+			orelse prop2 = prop4 andalso prop2 <> prop1 andalso prop2 <> prop3
+				then true 
+				else false
+		| disyuncion(conjuncion(prop1, prop2), conjuncion(prop3, prop4)) 
+			=> if prop1 = prop3 andalso prop1 <> prop2 andalso prop1 <> prop4 
+			orelse prop1 = prop4 andalso prop1 <> prop2 andalso prop1 <> prop3 
+			orelse prop2 = prop3 andalso prop2 <> prop1 andalso prop2 <> prop4
+			orelse prop2 = prop4 andalso prop2 <> prop1 andalso prop2 <> prop3
+				then true 
+				else false
+		| _ => false
+;
+
+fun Dis(prop) =
+	case prop of
+		conjuncion(disyuncion(prop1, prop2), disyuncion(prop3, prop4)) 
+			=> if prop1 = prop3 then
+				prop1 :||: (prop2 :&&: prop4)
+			else if prop1 = prop4 then
+				prop1 :||: (prop2 :&&: prop3)
+			else if prop2 = prop3 then
+				prop2 :||: (prop1 :&&: prop4)
+			else if prop2 = prop4 then
+				prop2 :||: (prop1 :&&: prop3)
+			else prop
+		| disyuncion(conjuncion(prop1, prop2), conjuncion(prop3, prop4)) 
+			=> if prop1 = prop3 then
+				prop1 :&&: (prop2 :||: prop4)
+			else if prop1 = prop4 then
+				prop1 :&&: (prop2 :||: prop3)
+			else if prop2 = prop3 then
+				prop2 :&&: (prop1 :||: prop4)
+			else if prop2 = prop4 then
+				prop2 :&&: (prop1 :||: prop3)
+			else prop
+		| _ => prop
+;

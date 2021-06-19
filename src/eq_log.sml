@@ -8,6 +8,28 @@ fun isNegComp(prop) =
 		| _ => false
 ;
 
+fun isConjComp(prop) = 
+	case prop of
+		conjuncion (disyuncion(prop1, prop2), prop3) => true
+		| conjuncion (conjuncion(prop1, prop2), prop3) => true
+		| conjuncion (implicacion(prop1, prop2), prop3) => true
+		| conjuncion (prop1, disyuncion(prop2, prop3)) => true
+		| conjuncion (prop1, conjuncion(prop2, prop3)) => true
+		| conjuncion (prop1, implicacion(prop2, prop3)) => true
+		| _ => false
+;
+
+fun isDisyComp(prop) = 
+	case prop of
+		disyuncion (disyuncion(prop1, prop2), prop3) => true
+		| disyuncion (conjuncion(prop1, prop2), prop3) => true
+		| disyuncion (implicacion(prop1, prop2), prop3) => true
+		| disyuncion (prop1, disyuncion(prop2, prop3)) => true
+		| disyuncion (prop1, conjuncion(prop2, prop3)) => true
+		| disyuncion (prop1, implicacion(prop2, prop3)) => true
+		| _ => false
+;
+
 (*Probar si a una negacion se le puede aplicar la regla de doble negacion.*)
 fun DNAux(prop) =
 	case prop of

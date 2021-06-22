@@ -25,3 +25,7 @@ fun as_vals vars bools = zip vars bools
 fun impr_as_vals []             = ""
 |   impr_as_vals ((v,b) :: vbs) = "(" ^ v ^ "," ^ (if b then "true" else "false") ^ ") " ^ impr_as_vals  vbs
 ;
+
+fun imprimirFnd ([],n) = ""
+|   imprimirFnd (((v,b) :: vbs,n)) ="(" ^ (if b then v else "~"^v ) ^ " && " ^")" ^ imprimirFnd  (vbs,n)
+;

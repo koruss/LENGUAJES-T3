@@ -41,3 +41,5 @@ val pru12 = vp :||: ~: vp  :||: vq :||: ~: vq
 val pru13 = (vp :=>: ~: vp)  :&&: (vq :=>: ~: vq);
 
 val pruSimpl = pru1;
+
+val pru100 = implicacion(disyuncion(variable "q", variable "p"), conjuncion(variable "p", variable "q"));

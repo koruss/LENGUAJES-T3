@@ -17,13 +17,52 @@ fun imprimir prop =
 	case prop of
         constante false             => "false"
     |   constante true              => "true"
-    |   variable nombre             => nombre
+    |   variable nombre             => nombre 
     |   negacion prop1              => "negacion (" ^ imprimir  prop1 ^ ")"
-    |   conjuncion (prop1, prop2)   => "conjuncion (" ^ imprimir prop1 ^ ", " ^ imprimir prop2 ^ ")"
+    |   conjuncion (prop1, prop2)   => "conjuncion (" ^ imprimir prop1 ^ ", " ^ imprimir prop2 ^ ")" 
     |   disyuncion (prop1, prop2)   => "disyuncion (" ^ imprimir prop1 ^ ", " ^ imprimir prop2 ^ ")"
     |   implicacion (prop1, prop2)  => "implicacion (" ^ imprimir prop1 ^ ", " ^ imprimir prop2 ^ ")"
     |   equivalencia (prop1, prop2) => "equivalencia (" ^ imprimir prop1 ^ ", " ^ imprimir prop2 ^ ")"
 ;
+
+fun cambiarExpresion prop =
+	case prop of
+        constante false             => "false"
+    |   constante true              => "true"
+    |   variable nombre             => nombre 
+    |   negacion prop1              => " ~ (" ^ cambiarExpresion  prop1 ^ ")"
+    |   conjuncion (prop1, prop2)   => " (" ^cambiarExpresion prop1 ^ " && " ^ cambiarExpresion prop2   ^ ")"
+    |   disyuncion (prop1, prop2)   => " (" ^cambiarExpresion prop1 ^ " || " ^ cambiarExpresion prop2 ^ ")"
+    |   implicacion (prop1, prop2)  => " (" ^cambiarExpresion prop1 ^ " => " ^ cambiarExpresion prop2 ^ ")"
+    |   equivalencia (prop1, prop2) => " (" ^cambiarExpresion prop1 ^ " <=> " ^ cambiarExpresion prop2 ^ ")"
+;
+ 
+fun change (prop) = 
+	case prop of
+        constante false             => "false"
+    |   constante true              => "true"
+    |   variable nombre             => nombre 
+    |   negacion prop1
+        => if isConst(prop1) then " ~ " ^ change  prop1 
+           else " ~ (" ^ change  prop1 ^ ")"
+    |   conjuncion (prop1, prop2)
+        => if douConst(prop) then  change  prop1 ^ " && " ^ change  prop2
+           else if oneNeg(prop) then  change  prop1 ^ " && " ^ change  prop2
+           (*else if oneDouIg(prop) then  change  prop1 ^ " && " ^ change  prop2*)
+           else if isConst(prop1) andalso calcPrece(prop) then  change  prop1 ^ " && " ^ change  prop2
+           else if isConst(prop1) andalso calcPrece(prop)=false then  change  prop1 ^ " && " ^ "(" ^ change  prop2 ^ ")"
+           (*else if oneDouIgNo(prop) then  change  prop1 ^ " && " ^ "(" ^ change  prop2 ^ ")"
+           else if douOneIg(prop) then  change  prop1 ^ " && " ^ change  prop2*)
+           (*else if oneDouIg(prop)=false then  change  prop1 ^ " && (" ^ change  prop2 ^ ")"*)
+           else "( "^ change  prop1 ^ " && " ^ change  prop2 ^ ")"
+;
+
+vp & vq
+vp & (vp | vr) 
+(vp | vr) & vp
+(vp | vr) & (vp | vr) 
+
+change(pru1000);
 
 nonfix ~:
 val ~: = negacion

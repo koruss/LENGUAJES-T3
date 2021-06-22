@@ -53,7 +53,8 @@ fun debugProp(prop) =
 	else "ID o llamada recursiva"
 ;
 val dbg = debugProp;
-(* http://calculator-online.org/mathlogic *)
+(* 
+ *)
 val vr = variable "r" ;
 val vs = constante false;
 (* val lmao = vp :||: vs;
@@ -71,6 +72,8 @@ val xd = test24p2;
 
 
 val base = vp
+
+
 
 (* fun simplificador prop =
 

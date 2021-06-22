@@ -1,45 +1,26 @@
+(*Probar si una negación tiene expresiones posiblemente simplificables adentro.*)
 fun isNegComp(prop) = 
 	case prop of
 		(*En caso de ser una negacion compuesta.*)
 		negacion (disyuncion(prop1, prop2)) => true
 		|negacion (conjuncion(prop1, prop2)) => true
 		|negacion (implicacion(prop1, prop2)) => true
+		|negacion (equivalencia(prop1, prop2)) => true
 		(*En caso de no ser negacion compuesta, retornar falso*)
-		| _ => false
-;
-
-fun isConjComp(prop) = 
-	case prop of
-		conjuncion (disyuncion(prop1, prop2), prop3) => true
-		| conjuncion (conjuncion(prop1, prop2), prop3) => true
-		| conjuncion (implicacion(prop1, prop2), prop3) => true
-		| conjuncion (prop1, disyuncion(prop2, prop3)) => true
-		| conjuncion (prop1, conjuncion(prop2, prop3)) => true
-		| conjuncion (prop1, implicacion(prop2, prop3)) => true
-		| _ => false
-;
-
-fun isDisyComp(prop) = 
-	case prop of
-		disyuncion (disyuncion(prop1, prop2), prop3) => true
-		| disyuncion (conjuncion(prop1, prop2), prop3) => true
-		| disyuncion (implicacion(prop1, prop2), prop3) => true
-		| disyuncion (prop1, disyuncion(prop2, prop3)) => true
-		| disyuncion (prop1, conjuncion(prop2, prop3)) => true
-		| disyuncion (prop1, implicacion(prop2, prop3)) => true
 		| _ => false
 ;
 
 (*Probar si a una negacion se le puede aplicar la regla de doble negacion.*)
 fun DNAux(prop) =
 	case prop of
-		(*En caso de ser doble negacion, IDificar*)
 		negacion (negacion prop1) => true
-		(*En caso de no ser doble negacion, no hacer nada*)
+		(*En caso de no ser doble negacion, retornar false*)
 		| _ => false
 ;
 
 (*Doble negacion*)
+(*Antes de correr la función de doble negación se debe probar si a la expresión
+se le puede aplicar la regla, utilicando DNAux.*)
 fun DN(prop) = 
 	case prop of
 		(*En caso de ser doble negacion, IDificar*)
@@ -61,6 +42,8 @@ fun IdemAux (prop)=
 ;
 
 (*Idempotencia*)
+(*Antes de correr la función de idempotencia se debe probar si a la expresión
+se le puede aplicar la regla, utilicando IdemAux.*)
 fun Idem (prop) =
 	case prop of
     conjuncion(prop1,prop2)=>prop2
@@ -81,6 +64,8 @@ fun InvAux(prop) =
 ;
 
 (*Inversos*)
+(*Antes de correr la función de inversos se debe probar si a la expresión
+se le puede aplicar la regla, utilicando InvAux.*)
 fun Inv(prop) = 
 	case prop of
 		disyuncion (prop1, prop2) => constante true
@@ -101,6 +86,8 @@ fun NeAux(prop) =
 ;
 
 (*Neutro*)
+(*Antes de correr la función de Neutro se debe probar si a la expresión
+se le puede aplicar la regla, utilicando NeAux.*)
 fun Ne(prop) =
 	case prop of
 		disyuncion (prop1, prop2) 
@@ -125,6 +112,8 @@ fun DomAux(prop) =
 ;
 
 (*Dominacion*)
+(*Antes de correr la función de Dominación se debe probar si a la expresión
+se le puede aplicar la regla, utilicando DomAux.*)
 fun Dom(prop) =
 	case prop of
 		disyuncion (prop1, prop2) => constante true (*  P ∨ V ≡ V *)
@@ -141,6 +130,8 @@ fun DMorgAux(prop) =
 ;
 
 (*DeMorgan*)
+(*Antes de correr la función de DeMorgan se debe probar si a la expresión
+se le puede aplicar la regla, utilicando DMorgAux.*)
 fun DMorg(prop) = 
 	case prop of
 		 negacion(disyuncion(prop1,prop2)) => ~:prop1 :&&: ~:prop2 (* ¬(P ∨ Q) ≡ ¬P ∧ ¬Q *)
@@ -174,6 +165,8 @@ fun AbsAux prop =
 ;
 
 (*Absorcion*)
+(*Antes de correr la función de Absorcion se debe probar si a la expresión
+se le puede aplicar la regla, utilicando AbsAux.*)
 fun Abs(prop) =
 	case prop of
 		disyuncion(conjuncion(prop1, prop2), prop3) => prop3
@@ -192,12 +185,16 @@ fun ExpAux(prop) =
 		| _ => false
 ;
 
+(*Exportación*)
+(*Antes de correr la función de Exportación se debe probar si a la expresión
+se le puede aplicar la regla, utilicando ExpAux.*)
 fun Exp(prop) = 
 	case prop of
 		implicacion(prop1, implicacion(prop2, prop3)) => (prop1 :&&: prop2) :=>: prop3
 		| _ => prop
 ;
 
+(*Probar si a una expresión se le puede aplicar la regla de distributividad.*)
 fun DisAux(prop) = 
 	case prop of
 		conjuncion(disyuncion(prop1, prop2), disyuncion(prop3, prop4)) 
@@ -217,6 +214,9 @@ fun DisAux(prop) =
 		| _ => false
 ;
 
+(*Distributividad*)
+(*Antes de correr la función de Distributividad se debe probar si a la expresión
+se le puede aplicar la regla, utilicando DisAux.*)
 fun Dis(prop) =
 	case prop of
 		conjuncion(disyuncion(prop1, prop2), disyuncion(prop3, prop4)) 

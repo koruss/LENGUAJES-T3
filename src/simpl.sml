@@ -1,41 +1,5 @@
 (* funcion 100% original homemade vegano gluten free*)
-fun cambiar prop =
-	case prop of
-        constante false             => constante false
-    |   constante true              => constante true  
-    |   variable nombre             => variable nombre
-    |   negacion prop1              
-		=> if DNAux(prop) then cambiar(DN(prop)) (* Doble Negacion 1 *)
-		else if DMorgAux(prop) then cambiar(DMorg(prop)) (* De Morgan 2,3 *)
-		else if isNegComp(prop) then ~:(cambiar(prop1)) (*despiche recursivo por negacion :v*)
-		else prop
-
-	|	conjuncion (prop1, prop2) 
-		=> if DisAux(prop) then cambiar(Dis(prop)) (*Distributividad 4,5*)
-		else if DomAux(prop) then cambiar(Dom(prop)) (* Dominacion 6,7*)
-		else if NeAux(prop) then cambiar(Ne(prop)) (*Neutro 8,9 *)	
-		else if InvAux(prop) then cambiar(Inv(prop)) (* Inversos 10,11 *)
-		else if IdemAux(prop) then cambiar(Idem(prop)) (*Idempotencia 12, 13*)
-		else if AbsAux(prop) then cambiar(Abs(prop)) (*Absorcion 14, 15*)
-		else cambiar(prop1) :&&: cambiar(prop2)
-		
-	|	disyuncion (prop1, prop2)
-		=> if DisAux(prop) then cambiar(Dis(prop))
-		else if DomAux(prop) then cambiar(Dom(prop))
-		else if NeAux(prop) then cambiar(Ne(prop))
-		else if InvAux(prop) then cambiar(Inv(prop))
-		else if IdemAux(prop) then cambiar(Idem(prop))
-		else if AbsAux(prop) then cambiar(Abs(prop))
-		else cambiar(prop1) :||: cambiar(prop2)
-
-    |   implicacion (prop1,prop2)   
-		=> if ExpAux(prop) then cambiar(Exp(prop)) (*Exportacion 16*)
-		else cambiar(ID(prop))     (*Implicacion y disyuncion 17*)
-
-	| 	_ => cambiar(prop)
-;
-
-(*Funcion recursiva que maneja la mayoría de la carga para simplificar proposiciones lógicas.*)
+(*Función recursiva que maneja la mayoría de la carga para simplificar proposiciones lógicas.*)
 fun simpRec(prop) = 
 	case prop of
 	(*Para todas las proposiciones no simplificables, retornar su valor. Esta es
@@ -50,7 +14,7 @@ fun simpRec(prop) =
 		proposiciones anidadas. Es por esto que existe la funcion simp(prop), la
 		cual se asegura de simplificar una expresión lo más posible.*)	
 	| negacion prop1	
-		=> if DNAux(prop) then simpRec(DN(prop))
+		=> if DNAux(prop) then simpRec(DN(prop)) 
 		else if DMorgAux(prop) then simpRec(DMorg(prop))
 		else if isNegComp(prop) then ~:(simpRec(prop1))
 		else prop
@@ -82,24 +46,28 @@ fun simpRec(prop) =
 (*Función que se encarga de llamar a la función simplificadora recursiva hasta
 que la expresión ya no sea simplificable.*)
 fun simpMax(prev, prop) =
-	let val prop = simpRec(prop)
-	in
-	(*Si la expresión es igual a la de la ejecución anterior, ya no es
-	simplificable, por lo tanto se retorna.*)
-	if prev = prop then
-		prop
-	else simpMax(prop, prop)
-	end
+  let val prop1 = simpRec(prop)
+  in
+  (*Si la expresión es igual a la de la ejecución anterior, ya no es
+  simplificable, por lo tanto se retorna.*)
+    if prop = prop1 then
+      prop
+    else simpMax(prop, prop1)
+  end
 ;
 
+(*Función principal a ser llamada para simplificar una proposición.*)
 fun simp(prop) =
 	simpMax(prop, prop)
 ;
 
+(*Función utilizada para depurar el proceso de simplificación, se ingresa un
+proposición y retorna la regla de simplificación que se supone que va a aplicar
+SimpRec.*)
 fun debugProp(prop) = 
 	if DNAux(prop) then "DobleNeg" (* Doble Negacion 1 *)
 	else if DMorgAux(prop) then "DMorg" (* De Morgan 2,3 *)
-	else if isNegComp(prop) then "Negacion Comp" (*despiche recursivo por negacion :v*)
+	else if isNegComp(prop) then "Negacion Comp" 
 	else if DisAux(prop) then "Distributiva" (*Distributividad 4,5*)
 	else if DomAux(prop) then "Dominacion" (* Dominacion 6,7*)
 	else if NeAux(prop) then "Neutro" (*Neutro 8,9 *)	
@@ -111,25 +79,3 @@ fun debugProp(prop) =
 ;
 val dbg = debugProp;
 (* http://calculator-online.org/mathlogic *)
-val vr = variable "r" ;
-val vs = constante false;
-(* val lmao = vp :||: vs;
-val dm = ~:(vp :||: vq);
-val ab = vp :||: (vp :&&: vq);
-val ac = (vp :||: vq) :&&: vp ; *)
-val xp = vp :=>: (vq :=>: vr);
-(* Debugging *)
-(* val xdd = (vp :=>: vq) :=>: vr; *)
-
-val dist = (vp :||: vq) :&&: (vp :||: vr);
-val test24 = (vp :||: vq) :&&: ~:(~:vp :&&: vq);
-val test24p2 = ~:(vq :&&: (vr :||: vq)) :&&: (vp :||: ~:vq);
-val t24 = test24 :||: test24p2;
-val t22 = vp :||: ((vq :&&: vr) :||: (~:vq :&&: vr));
-val xd = test24p2;
-
-val db1 = negacion(conjuncion(variable "q", disyuncion(variable "r", variable "q")));
-val db2 = disyuncion(variable "p", negacion(variable "q"));
-val db3 = db1 :&&: db2;
-
-val base = vp

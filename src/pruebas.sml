@@ -20,21 +20,29 @@ val prop4 = p :=>: q :<=>: ~: q :=>: ~: p
 val vp = variable "p" ;
 val vq = variable "q" ;
 
+val vr = variable "r" ;
+val vm = variable "m" ;
+
 val pru0 = vp :&&: ~: vp ;
 
 val pru1 = vp :=>: vq ;
+
 val pru2 = t :=>: vq ;
-val pru3 = vp :=>: (vq :=>: vq) ;
+
+val pru3 = vp :=>: (vq :=>: vp);
 val pru4 = t :=>: f ;
 val pru5 = f :=>: t ;
 
-val pru6 = vp :&&: vq :=>: vq :||: vp ; (* SÍ es una tautología *)
-val pru7 = vq :||: vp :=>: vp :&&: vq ; (* NO es una tautología *)
+val pru6 = vp :&&: vq :=>: vr :||: vm ; (* SÍ es una tautología *)
+val pru7 = vr :||: vp :=>: vp :&&: vq ; (* NO es una tautología *)
 val pru8 = ~: p :&&: p :||: q :&&: ~: q ; (* es una CONTRADICCIÓN *)
-val pru9 = ~: vp :&&: vp :||: vq :&&: ~: vq ; (* es una CONTRADICCIÓN *)
+val pru9 = ~: vp :&&: vp :||: vq :&&: ~: vm ; (* es una CONTRADICCIÓN *)
 
 (* tautologías triviales, con variables *)
-val pru10 = vp :||: ~: vp  :&&: vq :||: ~: vq  (* ojo con la precedencia aquí *)
+
+val pru10 = vp :||: ~: vr  :&&: vq :||: ~: vq  
+
+
 val pru11 = (vp :||: ~: vp)  :&&: (vq :||: ~: vq)
 val pru12 = vp :||: ~: vp  :||: vq :||: ~: vq
 

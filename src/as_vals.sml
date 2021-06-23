@@ -25,3 +25,13 @@ fun as_vals vars bools = zip vars bools
 fun impr_as_vals []             = ""
 |   impr_as_vals ((v,b) :: vbs) = "(" ^ v ^ "," ^ (if b then "true" else "false") ^ ") " ^ impr_as_vals  vbs
 ;
+
+
+(* Entrada: Recibe un conjunto de variables a evaluar y un numero total de variables y un contador**
+   Salida: Imprime un string con el resultado de aplicar la conjuncion entre las variables
+   Toma los conjuntos de variables y lo transforma en una una conjuncion.*)
+fun imprimirFnd ([],n,cont) = ""
+|   imprimirFnd (((v,b) :: vbs,n,cont)) = 
+            (if cont<n then ((if b then v else "~"^v ) ^" && " ^ imprimirFnd  (vbs,n,cont+1) ) 
+            else ((if b then v else "~"^v ) ^ imprimirFnd  (vbs,n,cont))^")")
+;

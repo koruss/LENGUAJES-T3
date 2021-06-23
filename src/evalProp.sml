@@ -32,6 +32,10 @@ fun busca ident []
    Hay un caso para cada variante de proposición.
 *)
 
+
+(* Recibe una proposicion y se encarga de evualuar cada caso de las variables,
+   retornando un resultado booleano*)
+   
 fun evalProp ambiente prop =
   case prop of
     constante valor

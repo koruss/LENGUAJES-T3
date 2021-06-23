@@ -11,3 +11,5 @@ use "pruebas.sml" ;
 use "eq_log.sml";
 use "simpl.sml";
 use "fnd.sml";
+
+use "bonita.sml"

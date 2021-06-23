@@ -26,6 +26,7 @@ fun impr_as_vals []             = ""
 |   impr_as_vals ((v,b) :: vbs) = "(" ^ v ^ "," ^ (if b then "true" else "false") ^ ") " ^ impr_as_vals  vbs
 ;
 
-fun imprimirFnd ([],n) = ""
-|   imprimirFnd (((v,b) :: vbs,n)) ="(" ^ (if b then v else "~"^v ) ^ " && " ^")" ^ imprimirFnd  (vbs,n)
+fun imprimirFnd ([],n,cont) = ""
+|   imprimirFnd (((v,b) :: vbs,n,cont)) = (if cont<n then ((if b then v else "~"^v ) ^" && " ^ imprimirFnd  (vbs,n,cont+1) ) 
+                                            else ((if b then v else "~"^v ) ^ imprimirFnd  (vbs,n,cont))^")")
 ;

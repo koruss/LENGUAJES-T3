@@ -179,52 +179,53 @@ fun change (prop) =
            else " ~ (" ^ change  prop1 ^ ")"
     |   conjuncion (prop1, prop2)
         => if douConst(prop) then  change  prop1 ^ " && " ^ change  prop2
-           else if oneNeg(prop) then if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " &&" ^ change  prop2
+           (* else if oneNeg(prop) then if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " &&" ^ change  prop2
                                     else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " &&" ^ change  prop2
                                     else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") &&" ^ change  prop
-                                    else  "("^change  prop1 ^ ") && (" ^ change  prop2^")"
+                                    else  "("^change  prop1 ^ ") && (" ^ change  prop2^")" *)
+           else if oneNeg(prop) then  change  prop1 ^ " && " ^ change  prop2
            else if isConst(prop1) then if oneDouIg(prop) then  change  prop1 ^ " && " ^ change  prop2
                                        else change  prop1 ^ " && (" ^ change  prop2 ^ ")"
            else if isConst(prop2) then if DouOneIg(prop) then  change  prop1 ^ " && " ^ change  prop2
                                        else "("^change  prop1 ^ ") && " ^ change  prop2 
-           else if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " &&" ^ change  prop2
+           else (if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " &&" ^ change  prop2
                 else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " &&" ^ change  prop2
                 else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") &&" ^ change  prop
-                else  "("^change  prop1 ^ ") && (" ^ change  prop2^")"
+                else  ""^change  prop1 ^ " && " ^ change  prop2^"")
     |   disyuncion (prop1, prop2)
         => if douConst(prop) then  change  prop1 ^ " || " ^ change  prop2        
            else if oneNeg(prop) then  if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " || " ^ change  prop2
                                     else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " || ~(" ^ change  prop2^")"
                                     else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") || " ^ change  prop2
-                                    else  "("^change  prop1 ^ ") || (" ^ change  prop2^")"
+                                    else  "("^change  prop1 ^ " || " ^ change  prop2^")"
            else if isConst(prop1) then if oneDouIg(prop) then  change  prop1 ^ " || " ^ change  prop2
                                        else change  prop1 ^ " || (" ^ change  prop2 ^ ")"
            else if isConst(prop2) then if DouOneIg(prop) then  change  prop1 ^ " || " ^ change  prop2
                                        else "("^change  prop1 ^ ") ||& " ^ change  prop2 
-           else if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " || " ^ change  prop2
+           else (if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " || " ^ change  prop2
                 else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " || ~(" ^ change  prop2^")"
                 else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") || " ^ change  prop2
-                else  "("^change  prop1 ^ ") || (" ^ change  prop2^")"
+                else  ""^change  prop1 ^ " || " ^ change  prop2^"")
     |   implicacion (prop1, prop2)
         => if douConst(prop) then  change  prop1 ^ " => " ^ change  prop2        
            else if oneNeg(prop) then  if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " => " ^ change  prop2
                                     else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " => ~(" ^ change  prop2^")"
                                     else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") => " ^ change  prop2
-                                    else  "("^change  prop1 ^ ") => (" ^ change  prop2^")"
+                                    else  "("^change  prop1 ^ " => " ^ change  prop2^")"
            else if isConst(prop1) then if oneDouIg(prop) then  change  prop1 ^ " => " ^ change  prop2
                                        else change  prop1 ^ " => (" ^ change  prop2 ^ ")"
            else if isConst(prop2) then if DouOneIg(prop) then  change  prop1 ^ " => " ^ change  prop2
                                        else "("^change  prop1 ^ ") => " ^ change  prop2 
-           else if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " => " ^ change  prop2
+           else (if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " => " ^ change  prop2
                 else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " => ~(" ^ change  prop2^")"
                 else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") => " ^ change  prop2
-                else  "("^change  prop1 ^ ") => (" ^ change  prop2^")"
+                else  ""^change  prop1 ^ " => " ^ change  prop2^"")
     |   equivalencia (prop1, prop2)
         => if douConst(prop) then  change  prop1 ^ " <=> " ^ change  prop2        
            else if oneNeg(prop) then  if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " <=> " ^ change  prop2
                                     else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " <=> ~(" ^ change  prop2^")"
                                     else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") <=> " ^ change  prop2
-                                    else  "("^change  prop1 ^ ") <=> (" ^ change  prop2^")"
+                                    else  "("^change  prop1 ^ " <=> " ^ change  prop2^")"
            else if isConst(prop1) then if oneDouIg(prop) then  change  prop1 ^ " <=> " ^ change  prop2
                                        else change  prop1 ^ " <=> (" ^ change  prop2 ^ ")"
            else if isConst(prop2) then if DouOneIg(prop) then  change  prop1 ^ " <=> " ^ change  prop2
@@ -232,13 +233,7 @@ fun change (prop) =
            else if isConst(prop1) andalso isConst(prop2) then  change  prop1 ^ " <=> " ^ change  prop2
                 else if isNeg(prop1) andalso oneDouIg(prop) then change  prop1 ^ " <=> ~(" ^ change  prop2^")"
                 else if isNeg(prop2) andalso DouOneIg(prop) then "("^change  prop1 ^ ") <=> " ^ change  prop2
-                else  "("^change  prop1 ^ ") <=> (" ^ change  prop2^")"
+                else  ""^change  prop1 ^ " <=> " ^ change  prop2^""
     | _ => "no hay"
 ;
 
-fun bonita (prop) = 
-    (* val impProp=imprimir(prop) *)
-    val impBonita=change(prop)
-
-    (* impProp^"\n"^impBonita *)
-;
